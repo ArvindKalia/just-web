@@ -3,8 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const multer= require("multer")
+const multiPart=multer().none();
 
 const indexRouter= require("./routes/index.route")
+const signupRouter= require("./routes/signup.route")
+const companyRouter= require("./routes/company.route")
 
 const app = express();
 
@@ -17,8 +21,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multiPart)
 
 app.use("/",indexRouter)
+app.use("/api/signup",signupRouter)
+app.use("/api/private/company",companyRouter)
 
 
 
