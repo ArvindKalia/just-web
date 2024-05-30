@@ -1,18 +1,21 @@
-require("dotenv").config()
+// require("dotenv").config()
+// const secretKey=process.env.SECRET_KEY
+// const jwt=require("jsonwebtoken")
+// const ajax=require("supertest")
 const express=require("express")
 const router=express.Router()
-const ajax=require("supertest")
-const secretKey=process.env.SECRET_KEY
-const jwt=require("jsonwebtoken")
+const tokenRequest=require("../services/token.service")
+const httpRequest=require("../services/http.service")
 
-    router.post("/",(request,response)=>{
-        const formData=request.body
-        // console.log(formData)
-        const token=jwt.sign({
-            iss:"",
-            data:formData
-        },secretKey,{expiresIn:120})
-        console.log(token)
+    router.post("/",async(request,response)=>{
+        let expiresIn=120
+        const token=await tokenRequest.createToken(request,expiresIn)
+        // console.log(token)
+        httpRequest.postRequest({
+            endPoint:request.get("origin"),
+            api: "/api/private/company",
+            data:token
+        })
     })
 
 module.exports= router
