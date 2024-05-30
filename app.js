@@ -9,6 +9,7 @@ const multiPart=multer().none();
 const indexRouter= require("./routes/index.route")
 const signupRouter= require("./routes/signup.route")
 const companyRouter= require("./routes/company.route")
+const tokenService=require("./services/token.service")
 
 const app = express();
 
@@ -25,6 +26,20 @@ app.use(multiPart)
 
 app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
+
+app.use(async(request,response,next)=>{
+  const isVerified= await tokenService.verifyToken(request)
+  if(isVerified)
+    {
+      next();
+    }
+    else{
+      response.status(401)
+      response.json({
+        message: "Authenticaton declined"
+      })
+    }
+})
 app.use("/api/private/company",companyRouter)
 
 
