@@ -29,8 +29,10 @@ app.use("/api/signup",signupRouter)
 
 app.use(async(request,response,next)=>{
   const isVerified= await tokenService.verifyToken(request)
-  if(isVerified)
+  if(isVerified.isVerify)
+    
     {
+      console.log(isVerified.isVerify)
       next();
     }
     else{

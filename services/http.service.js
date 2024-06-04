@@ -5,7 +5,7 @@ const postRequest=(requestData)=>{
     .post(requestData.api)
     .send({token:requestData.data})
     .end((error,dataRes)=>{
-        console.log(dataRes.body)
+        // console.log(dataRes.body)
     })
 }
 

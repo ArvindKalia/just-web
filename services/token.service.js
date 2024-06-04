@@ -8,6 +8,7 @@ const create=async(request,expiresIn)=>{
     const endPoint=request.get("origin")
     const api= request.originalUrl
     const iss= endPoint+api
+    expiresIn=120
     // console.log(formData)
     const token= await jwt.sign({
         iss:iss,
@@ -21,20 +22,28 @@ const verify=async(request)=>{
     if(token)
         {
             try{
-                const tmp=jwt.verify(token,secretKey)
+                const tmp= await jwt.verify(token,secretKey)
+                // console.log(tmp)
                 const requestComingFrom= tmp.iss
                 if(issService.indexOf(requestComingFrom)!=-1)
                     {
-                        return true
+                        return{
+                            isVerify:true,
+                            data:tmp.data
+                        }
                     }
                 else{
-                    return false
+                    return{
+                        isVerified:false
+                    }
                 }
                 
             }
             catch(error)
             {
-                return false
+                return{
+                    isVerified:false
+                }
             }
         }
 }
