@@ -16,6 +16,19 @@ const create=async(request,expiresIn)=>{
     },secretKey,{expiresIn:expiresIn})
     return token;
 }
+const createCustomToken=async(data,expiresIn)=>{
+    const formData=data.body
+    const endPoint=data.endpoint
+    const api= data.originalUrl
+    const iss= endPoint+api
+    // expiresIn=120
+    // console.log(formData)
+    const token= await jwt.sign({
+        iss:iss,
+        data:formData
+    },secretKey,{expiresIn:expiresIn})
+    return token;
+}
 
 const verify=async(request)=>{
     const token= request.body.token
@@ -34,7 +47,7 @@ const verify=async(request)=>{
                     }
                 else{
                     return{
-                        isVerified:false
+                        isVerify:false
                     }
                 }
                 
@@ -42,7 +55,7 @@ const verify=async(request)=>{
             catch(error)
             {
                 return{
-                    isVerified:false
+                    isVerify:false
                 }
             }
         }
@@ -50,5 +63,6 @@ const verify=async(request)=>{
 
 module.exports={
     createToken:create,
-    verifyToken:verify
+    verifyToken:verify,
+    createCustomToken
 }

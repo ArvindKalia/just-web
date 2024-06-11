@@ -21,6 +21,8 @@ const companySchema=new Schema({
     }
 })
 
+//company name unique validation
+
 companySchema.pre("save",async function(next){
     const query={
         company:this.company
@@ -28,6 +30,21 @@ companySchema.pre("save",async function(next){
     const length= await mongo.model("company").countDocuments(query)
     if(length>0){
        throw next("Company Name Already Exist")
+    }
+    else{
+        next()
+    }
+})
+
+//email unique validation
+
+companySchema.pre("save",async function(next){
+    const query={
+        email:this.email
+    }
+    const length= await mongo.model("company").countDocuments(query)
+    if(length>0){
+       throw next("Email Already Exist")
     }
     else{
         next()

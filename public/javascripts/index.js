@@ -30,6 +30,9 @@ $(document).ready(()=>{
             processData:false,
             success:(response)=>{
                 console.log(response)
+            },
+            error:(error)=>{
+                console.log(error)
             }
         })
     })

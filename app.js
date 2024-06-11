@@ -9,6 +9,7 @@ const multiPart=multer().none();
 const indexRouter= require("./routes/index.route")
 const signupRouter= require("./routes/signup.route")
 const companyRouter= require("./routes/company.route")
+const userRouter= require("./routes/user.route")
 const tokenService=require("./services/token.service")
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(multiPart)
 
+app.use("/api/private/user",userRouter)
 app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
 
@@ -32,7 +34,7 @@ app.use(async(request,response,next)=>{
   if(isVerified.isVerify)
     
     {
-      console.log(isVerified.isVerify)
+      // console.log(isVerified.isVerify)
       next();
     }
     else{
@@ -41,8 +43,8 @@ app.use(async(request,response,next)=>{
         message: "Authenticaton declined"
       })
     }
-})
-app.use("/api/private/company",companyRouter)
+  })
+  app.use("/api/private/company",companyRouter)
 
 
 
