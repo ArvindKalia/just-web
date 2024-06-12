@@ -29,7 +29,11 @@ companySchema.pre("save",async function(next){
     }
     const length= await mongo.model("company").countDocuments(query)
     if(length>0){
-       throw next("Company Name Already Exist")
+        const cmpError={
+            label:"Company Name Already Exist",
+            field:"company-name"
+        }
+       throw next(cmpError)
     }
     else{
         next()
@@ -44,7 +48,11 @@ companySchema.pre("save",async function(next){
     }
     const length= await mongo.model("company").countDocuments(query)
     if(length>0){
-       throw next("Email Already Exist")
+        const emailError={
+            label:"Company Email Already Exist",
+            field:"company-email"
+        }
+       throw next(emailError)
     }
     else{
         next()

@@ -9,14 +9,19 @@ div.modal.animate__animated.animate__zoomIn#signup-modal
                         h1.display-4(style="font-size:35px") Register Now
                         form#signup-form
                             div.form-group.mb-4
-                                input.form-control.p-4(required type="text" placeholder="Company Name" name="company")
+                                input.form-control.company-name.p-4(required type="text" placeholder="Company Name" name="company")
+                                span.company-name-error.text-danger                           
                             div.form-group.mb-4
-                                input.form-control.p-4(required type="email" placeholder="Company Email" name="email")
+                                input.form-control.company-email.p-4(required type="email" placeholder="Company Email" name="email")
+                                span.company-email-error.text-danger                           
                             div.form-group.mb-4
                                 input.form-control.p-4(required type="number" placeholder="Company Mobile" name="mobile")
                             div.form-group.mb-4
                                 input.form-control.p-4(required type="password" placeholder="Company Password" name="password")
                             div.form-group.mb-4
-                                button.btn.btn-primary(type="submit") Signup
+                                button.btn.btn-primary.signup-btn(type="submit") Signup
+                                button.btn.btn-danger.disabled.d-none.before-send
+                                    span.spinner-grow.spinner-grow-sm
+                                    span  Processing...
                             p Already have an account ? 
                                 a(href="#" id="login-modal-request") Login

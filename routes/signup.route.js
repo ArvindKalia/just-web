@@ -34,6 +34,7 @@ router.post("/", async (request, response) => {
             api: "/api/private/user",
             data: userToken
         })
+        response.json(userRes)
     }
     else {
         response.json(companyRes)

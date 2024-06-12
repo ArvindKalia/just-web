@@ -18,7 +18,7 @@ const create=async(request,expiresIn)=>{
 }
 const createCustomToken=async(data,expiresIn)=>{
     const formData=data.body
-    const endPoint=data.endpoint
+    const endPoint=data.endPoint
     const api= data.originalUrl
     const iss= endPoint+api
     // expiresIn=120
@@ -57,6 +57,11 @@ const verify=async(request)=>{
                 return{
                     isVerify:false
                 }
+            }
+        }
+        else{
+            return{
+                isVerify:false
             }
         }
 }

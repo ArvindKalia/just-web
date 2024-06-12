@@ -1,4 +1,5 @@
 const mongo= require("mongoose")
+const encryptService=require("../services/bcrypt.service")
 const {Schema}= mongo;
 
 const userSchema= new Schema({
@@ -14,6 +15,13 @@ const userSchema= new Schema({
         type:Date,
         default: Date.now
     }
+})
+
+userSchema.pre("save", async function(next){
+    const data=this.password;
+    const encryptedPassword=await encryptService.encrypt(data)
+    this.password=encryptedPassword
+    next();
 })
 
 module.exports= mongo.model("User",userSchema)

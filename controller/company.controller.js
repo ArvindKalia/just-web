@@ -7,8 +7,8 @@ const createCompany = async (request, response) => {
         const data = token.data
 
         try {
-            const dataRes = await dbService.createRecord(data)
-            response.status(409)
+            const dataRes = await dbService.createRecord(data,"companySchema")
+            response.status(200)
             response.json({
                 isCompanyCreated: true,
                 message: "Company Created",

@@ -8,6 +8,7 @@ const multiPart=multer().none();
 
 const indexRouter= require("./routes/index.route")
 const signupRouter= require("./routes/signup.route")
+const loginRouter= require("./routes/login.route")
 const companyRouter= require("./routes/company.route")
 const userRouter= require("./routes/user.route")
 const tokenService=require("./services/token.service")
@@ -25,9 +26,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(multiPart)
 
-app.use("/api/private/user",userRouter)
 app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
+app.use("/api/login",loginRouter)
 
 app.use(async(request,response,next)=>{
   const isVerified= await tokenService.verifyToken(request)
@@ -45,8 +46,9 @@ app.use(async(request,response,next)=>{
     }
   })
   app.use("/api/private/company",companyRouter)
-
-
+  app.use("/api/private/user",userRouter)
+  
+  
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
