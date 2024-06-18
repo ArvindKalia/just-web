@@ -11,6 +11,7 @@ const signupRouter= require("./routes/signup.route")
 const loginRouter= require("./routes/login.route")
 const companyRouter= require("./routes/company.route")
 const userRouter= require("./routes/user.route")
+const profileRouter=require("./routes/profile.route")
 const tokenService=require("./services/token.service")
 
 const app = express();
@@ -29,6 +30,8 @@ app.use(multiPart)
 app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
 app.use("/api/login",loginRouter)
+app.use("/profile",profileRouter)
+
 
 app.use(async(request,response,next)=>{
   const isVerified= await tokenService.verifyToken(request)

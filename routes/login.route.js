@@ -65,10 +65,16 @@ router.post("/",async(request,response)=>{
                 }
             else
                 {
+                    //Now this is a diect gateway response --->
+                    response.status(userRes.status)
+                    //<-----------
                     response.json(userRes)
                 }
         }
         else{
+            //Now this is a diect gateway response --->
+            response.status(404)
+             //<-----------
             response.json(companyRes)
         }
 })
