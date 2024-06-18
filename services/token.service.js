@@ -31,7 +31,15 @@ const createCustomToken=async(data,expiresIn)=>{
 }
 
 const verify=async(request)=>{
-    const token= request.body.token
+    let token= ""
+    if(request.method=="GET")
+        {
+            token=request.headers['x-auth-token']
+            // console.log(token)
+        }
+    else{
+        token=request.body.token
+    }
     if(token)
         {
             try{

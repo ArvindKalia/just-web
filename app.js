@@ -41,7 +41,7 @@ app.use(async(request,response,next)=>{
     else{
       response.status(401)
       response.json({
-        message: "Authenticaton declined"
+        message: "Authenticaton decliined"
       })
     }
   })

@@ -1,6 +1,7 @@
 const express=require("express")
 const tokenService = require("../services/token.service")
 const httpService = require("../services/http.service")
+const bcryptService=require("../services/bcrypt.service")
 
 const router=express.Router()
 
@@ -13,7 +14,63 @@ router.post("/",async(request,response)=>{
         api: "/api/private/company",
         data: token
     })
-    console.log(companyRes)
+    // console.log(companyRes)
+    if(companyRes.isCompanyExists)
+        {
+            const uid=companyRes.data[0]._id
+            const query={
+                body:{
+                    uid:uid
+                },
+                endPoint: request.get("origin"),
+                originalUrl: request.originalUrl
+            }
+            const uidToken=await tokenService.createCustomToken(query,expiresIn)
+            // console.log(uidToken)
+            //Get user ID
+            const userRes=await httpService.getRequest({
+                endPoint: request.get("origin"),
+                api: "/api/private/user",
+                data: uidToken
+            })
+
+            // Get user password
+            // console.log(userRes)
+            if(userRes.isCompanyExists)
+                {
+                    const realPassword=userRes.data[0].password
+                    // console.log(realPassword)
+                    const isLogged= await bcryptService.decrypt(realPassword,request.body.password)
+                    // console.log(isLogged)
+                    if(isLogged)
+                        {
+                            const sevenDaysInSeconds=604800
+                            const authToken= await tokenService.createCustomToken(query,sevenDaysInSeconds)
+                            response.cookie("authToken",authToken)
+                            response.status(200)
+                            response.json({
+                                isLogged:true,
+                                message: "Success"
+                            })
+                        }
+                        else
+                        {
+                            response.status(401)
+                            response.json({
+                                isLogged:false,
+                                message: "Password Incorrect !"
+                            })
+
+                        }
+                }
+            else
+                {
+                    response.json(userRes)
+                }
+        }
+        else{
+            response.json(companyRes)
+        }
 })
 
 module.exports=router

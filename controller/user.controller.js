@@ -30,6 +30,43 @@ const createUser = async (request, response) => {
     }
 }
 
+const getUserPassword=async(request,response)=>{
+    const token= await tokenService.verifyToken(request)
+    // console.log(token)
+    if(token.isVerify)
+        {
+            const uidFound=token.data
+            const dataRes=await dbService.getRecordByQuery(uidFound,'userSchema')
+            // console.log(dataRes)
+            if(dataRes.length>0)
+                {
+                    response.status(200)
+                    response.json({
+                        isCompanyExists:true,
+                        message:"Company Found!",
+                        data:dataRes
+                    })
+
+                }
+            else
+                {
+                    response.status(404)
+                    response.json({
+                        isCompanyExists:false,
+                        message:"Company not Found!"
+                    })
+                }
+        }
+    else
+        {
+            response.status(401)
+            response.json({
+                message:"Permission Denied!"
+            })
+        }
+}
+
 module.exports = {
-    createUser: createUser
+    createUser: createUser,
+    getUserPassword
 }

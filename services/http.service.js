@@ -8,7 +8,8 @@ const postRequest= async(requestData)=>{
 }
 const getRequest= async(requestData)=>{
     const response = await ajax(requestData.endPoint)
-    .post(requestData.api+"/"+requestData.data)
+    .get(requestData.api+"/"+requestData.data)
+    .set({'X-Auth-Token':requestData.data})
     return response.body
 }
 

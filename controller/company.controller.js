@@ -31,6 +31,41 @@ const createCompany = async (request, response) => {
     }
 }
 
+const getCompanyId=async(request,response)=>{
+    const token=await tokenService.verifyToken(request)
+    // console.log(token)
+    if(token.isVerify)
+        {
+            const query={
+                email:token.data.email
+            }
+            const companyRes= await dbService.getRecordByQuery(query,"companySchema")
+            if(companyRes.length>0){
+                // console.log(companyRes)
+                response.status(200)
+                response.json({
+                    isCompanyExists:true,
+                    message:"Company Found!",
+                    data:companyRes
+                })
+            }
+            else{
+                response.status(404)
+                response.json({
+                    isCompanyExists:false,
+                    message:"Company not Found!"
+                })
+            }
+        }
+    else{
+        response.status(401)
+        response.json({
+            message:"Permission Denied !"
+        });
+    }
+}
+
 module.exports = {
-    createCompany
+    createCompany,
+    getCompanyId
 }
