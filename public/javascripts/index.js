@@ -1,3 +1,9 @@
+//redirecting user if already logged in
+if(document.cookie.indexOf("authToken") != -1)
+  {
+    window.location="/profile"
+  }
+
 $(document).ready(() => {
   $("#login-modal-request").click((e) => {
     e.preventDefault();

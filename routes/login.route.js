@@ -44,9 +44,9 @@ router.post("/",async(request,response)=>{
                     // console.log(isLogged)
                     if(isLogged)
                         {
-                            const sevenDaysInSeconds=604800
+                            const sevenDaysInSeconds=604800*1000
                             const authToken= await tokenService.createCustomToken(query,sevenDaysInSeconds)
-                            response.cookie("authToken",authToken)
+                            response.cookie("authToken",authToken,{maxAge:sevenDaysInSeconds})
                             response.status(200)
                             response.json({
                                 isLogged:true,

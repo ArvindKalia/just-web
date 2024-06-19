@@ -34,7 +34,16 @@ const verify=async(request)=>{
     let token= ""
     if(request.method=="GET")
         {
-            token=request.headers['x-auth-token']
+            if(request.headers['x-auth-token'])
+                {
+
+                    token=request.headers['x-auth-token']
+                }
+                else
+                {
+
+                    token=request.cookies.authToken
+                }
             // console.log(token)
         }
     else{

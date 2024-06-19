@@ -11,8 +11,8 @@ const signupRouter= require("./routes/signup.route")
 const loginRouter= require("./routes/login.route")
 const companyRouter= require("./routes/company.route")
 const userRouter= require("./routes/user.route")
-const profileRouter=require("./routes/profile.route")
 const tokenService=require("./services/token.service")
+const profileRouter=require("./routes/profile.route")
 
 const app = express();
 
@@ -30,7 +30,6 @@ app.use(multiPart)
 app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
 app.use("/api/login",loginRouter)
-app.use("/profile",profileRouter)
 
 
 app.use(async(request,response,next)=>{
@@ -42,29 +41,32 @@ app.use(async(request,response,next)=>{
       next();
     }
     else{
+      response.clearCookie("authToken")
       response.status(401)
-      response.json({
-        message: "Authenticaton decliined"
-      })
+      // response.json({
+      //   message: "Permission declined"
+      // })
+      response.redirect("/")
     }
   })
   app.use("/api/private/company",companyRouter)
   app.use("/api/private/user",userRouter)
+  app.use("/profile",profileRouter)
   
   
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  
+  // catch 404 and forward to error handler
+  app.use(function(req, res, next) {
+    next(createError(404));
+  });
+  
+  // error handler
+  app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    
+    // render the error page
   res.status(err.status || 500);
   res.render('error');
 });

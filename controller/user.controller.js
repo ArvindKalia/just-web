@@ -65,8 +65,24 @@ const getUserPassword=async(request,response)=>{
             })
         }
 }
+const createLog=async(request,response)=>{
+    const token= await tokenService.verifyToken(request)
+    // console.log(token)
+    if(token.isVerify)
+        {
+            console.log("accepted")
+        }
+    else
+        {
+            response.status(401)
+            response.json({
+                message:"Permission Denied!"
+            })
+        }
+}
 
 module.exports = {
     createUser: createUser,
-    getUserPassword
+    getUserPassword,
+    createLog
 }
