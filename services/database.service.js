@@ -21,8 +21,14 @@ const getRecordByQuery=async(query,schema)=>{
     const companyRes= await currentSchema.find(query)
     return companyRes
 }
+const updateByQuery=async(query,schema,data)=>{
+    const currentSchema=selectSchema[schema]
+    const dbRes= await currentSchema.updateOne(query,data)
+    return dbRes
+}
 
 module.exports={
     createRecord,
-    getRecordByQuery
+    getRecordByQuery,
+    updateByQuery
 }

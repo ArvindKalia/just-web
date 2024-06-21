@@ -111,10 +111,17 @@ $(document).ready(() => {
           setTimeout(() => {
             resetValidator(field);
           }, 3000);
+        } else if(error.status == 406) {
+          const field = ".password";
+          $(".password").addClass("border border-danger");
+          $(".password-error").html(error.responseJSON.message);
+          setTimeout(() => {
+            resetValidator(field);
+          }, 3000);
         }
         else
         {
-            swal(error.status,"Internal Server Error !","warning")
+            swal("500","Internal Server Error !","warning")
         }
       },
     });

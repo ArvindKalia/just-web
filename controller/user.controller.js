@@ -68,9 +68,24 @@ const getUserPassword=async(request,response)=>{
 const createLog=async(request,response)=>{
     const token= await tokenService.verifyToken(request)
     // console.log(token)
+    // console.log(request)
     if(token.isVerify)
         {
-            console.log("accepted")
+            const query={
+                uid:token.data.uid
+            }
+            const data={
+                token: request.body.token,
+                expiresIn: 86400,
+                isLogged: true,
+                updatedAt: Date.now()
+            }
+
+            const userRes= await dbService.updateByQuery(query,"userSchema",data)
+            response.status(201)
+            response.json({
+                message:"Update Successful"
+            })
         }
     else
         {

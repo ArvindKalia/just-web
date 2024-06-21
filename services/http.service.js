@@ -12,8 +12,15 @@ const getRequest= async(requestData)=>{
     .set({'X-Auth-Token':requestData.data})
     return response.body
 }
+const putRequest= async(requestData)=>{
+    const response = await ajax(requestData.endPoint)
+    .put(requestData.api+"/"+requestData.data)
+    .send({token:requestData.data})
+    return response.body
+}
 
 module.exports={
     postRequest,
-    getRequest
+    getRequest,
+    putRequest
 }

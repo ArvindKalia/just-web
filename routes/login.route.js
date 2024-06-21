@@ -38,15 +38,27 @@ router.post("/",async(request,response)=>{
             // console.log(userRes)
             if(userRes.isCompanyExists)
                 {
+                    if(userRes.data[0].isLogged){
+                        response.status(406)
+                        response.json({
+                            message:"Please logout from other device"
+                        })
+                        return false
+                    }
                     const realPassword=userRes.data[0].password
                     // console.log(realPassword)
                     const isLogged= await bcryptService.decrypt(realPassword,request.body.password)
                     // console.log(isLogged)
                     if(isLogged)
                         {
-                            const sevenDaysInSeconds=604800*1000
-                            const authToken= await tokenService.createCustomToken(query,sevenDaysInSeconds)
-                            response.cookie("authToken",authToken,{maxAge:sevenDaysInSeconds})
+                            const oneDayInSeconds=86400
+                            const authToken= await tokenService.createCustomToken(query,oneDayInSeconds)
+                            const dbToken= await httpService.putRequest({
+                                endPoint:request.get("origin"),
+                                api: "/api/private/user",
+                                data: authToken
+                            })
+                            response.cookie("authToken",authToken,{maxAge:oneDayInSeconds*1000})
                             response.status(200)
                             response.json({
                                 isLogged:true,

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const multer= require("multer")
 const multiPart=multer().none();
+const authController=require("./controller/auth.controller")
 
 const indexRouter= require("./routes/index.route")
 const signupRouter= require("./routes/signup.route")
@@ -49,9 +50,24 @@ app.use(async(request,response,next)=>{
       response.redirect("/")
     }
   })
+
+  const authLogger=()=>{
+    return async(request,response,next)=>{
+     const isLogged=await  authController.checkUserLogged(request)
+    if(isLogged)
+      {
+        next()
+      }
+      else{
+        response.clearCookie("authToken")
+        response.redirect("/")
+      }
+    }
+
+  }
   app.use("/api/private/company",companyRouter)
   app.use("/api/private/user",userRouter)
-  app.use("/profile",profileRouter)
+  app.use("/profile",authLogger(),profileRouter)
   
   
   

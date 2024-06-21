@@ -11,6 +11,13 @@ const userSchema= new Schema({
         type:String,
         required: true
     },
+    token: String,
+    expiresIn: Number,
+    isLogged: Boolean,
+    updatedAt: {
+        type:Date,
+        default: Date.now
+    },
     createdAt:{
         type:Date,
         default: Date.now
