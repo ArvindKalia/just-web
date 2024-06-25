@@ -7,7 +7,7 @@ const selectSchema={
 }
 
 
-const url="mongodb://127.0.0.1:27017/test"
+const url="mongodb://127.0.0.1:27017/just-web"
 mongo.connect(url)
 
 const createRecord=async (data,schema)=>{

@@ -38,13 +38,13 @@ router.post("/",async(request,response)=>{
             // console.log(userRes)
             if(userRes.isCompanyExists)
                 {
-                    if(userRes.data[0].isLogged){
-                        response.status(406)
-                        response.json({
-                            message:"Please logout from other device"
-                        })
-                        return false
-                    }
+                    // if(userRes.data[0].isLogged){
+                    //     response.status(406)
+                    //     response.json({
+                    //         message:"Please logout from other device"
+                    //     })
+                    //     return false
+                    // }
                     const realPassword=userRes.data[0].password
                     // console.log(realPassword)
                     const isLogged= await bcryptService.decrypt(realPassword,request.body.password)

@@ -6,6 +6,8 @@ const logger = require('morgan');
 const multer= require("multer")
 const multiPart=multer().none();
 const authController=require("./controller/auth.controller")
+const logoutRouter=require("./routes/logout.route")
+const studentRouter=require("./routes/students.route")
 
 const indexRouter= require("./routes/index.route")
 const signupRouter= require("./routes/signup.route")
@@ -53,7 +55,7 @@ app.use(async(request,response,next)=>{
 
   const authLogger=()=>{
     return async(request,response,next)=>{
-     const isLogged=await  authController.checkUserLogged(request)
+     const isLogged=await  authController.checkUserLogged(request,response)
     if(isLogged)
       {
         next()
@@ -67,6 +69,8 @@ app.use(async(request,response,next)=>{
   }
   app.use("/api/private/company",companyRouter)
   app.use("/api/private/user",userRouter)
+  app.use("/students",studentRouter)
+  app.use("/logout",logoutRouter)
   app.use("/profile",authLogger(),profileRouter)
   
   

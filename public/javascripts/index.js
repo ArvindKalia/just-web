@@ -41,17 +41,8 @@ $(document).ready(() => {
       },
       success: (response) => {
         // console.log(response)
-        if (response.isCompanyCreated) {
-          //redirect to login page
-        } else {
-          const label = response.message.label;
-          const field = "." + response.message.field;
-          $(field).addClass("border border-danger");
-          $(field + "-error").html(label);
-
-          setTimeout(() => {
-            resetValidator(field);
-          }, 3000);
+        if (response.isUserCreated) {
+          window.location="/profile"
         }
       },
       complete: () => {
@@ -59,7 +50,20 @@ $(document).ready(() => {
         $(".signup-btn").removeClass("d-none");
       },
       error: (error) => {
-        console.log(error);
+        // console.log(error);
+        const errorRes=error.responseJSON
+        if(error.status == 409){
+          const label = errorRes.message.label;
+          const field = "." + errorRes.message.field;
+          $(field).addClass("border border-danger");
+          $(field + "-error").html(label);
+
+          setTimeout(() => {
+            resetValidator(field);
+          }, 3000);
+        }else{
+          swal("500","Internal Server Error","warning")
+        }
       },
     });
   });
