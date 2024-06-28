@@ -4,6 +4,7 @@ include profile
     block loadScript
         script(src="javascripts/students.js") 
     block content
+    - const skeleton=["a","b","c","d","e"]
         p.medium-font Students
         div.card.container-fluid
             div.card-body.border-none
@@ -18,18 +19,47 @@ include profile
                     div.col-md-3
                         button.btn.btn-light.mx-4 Export
                         button.btn.btn-primary(data-bs-toggle="modal" data-bs-target="#student-modal") Add Students
+                div.table-responsive
+                    table.table.my-5
+                        thead
+                            tr
+                                th Profile
+                                th Email
+                                th Mobile
+                                th Father
+                                th DOB
+                                th Country
+                                th State
+                                th Pincode
+                                th Address
+                                th Status
+                                th CreatedAt
+                                th Action
+                        tbody.students-list
+                            each data of skeleton
+                                tr.students-skeleton
+                                    td(colspan="9").py-3
+                                        div.d-flex
+                                            div.mx-3.d-flex.justify-content-center.align-items-center
+                                                div.student-pic.skeleton
+                                                    div.skeleton-loader
+                                            div.d-flex.w-100.flex-column
+                                                div.student-title.mb-2.skeleton
+                                                    div.skeleton-loader
+                                                div.student-subtitle.skeleton
+                                                    div.skeleton-loader
         div.modal.animate__animated.animate__slideInDown.animate__faster#student-modal
             div.modal-dialog.modal-dialog-centered.modal-lg
                 div.modal-content
                     div.modal-body.px-4
                         h4.medium-font Students
-                        form
+                        form#student-form
                             div.row
                                 div.col-md-6
                                     div.form-group.mb-3
                                         input(required type="text", name="studentName" placeholder="Student Name", class="form-control input remove-focus")
                                     div.form-group.mb-3
-                                        input(required type="email" name="studentEmail" placeholder="Student Email" class="form-control input remove-focus")
+                                        input(required type="email" name="studentEmail" placeholder="Student Email" class="form-control input remove-focus student-email")
                                     div.form-group.mb-3
                                         input(required type="text" name="studentFather" placeholder="Student Father" class="form-control input remove-focus")
                                     div.form-group.mb-3
@@ -49,4 +79,9 @@ include profile
                                     div.form-group.mb-3
                                         textarea(required placeholder="Student Address" name="studentAddress" class="form-control input remove-focus")
 
-                                    button.btn.btn-primary.float-end(type="submit") Submit
+                                    button.btn.btn-primary.float-end.add-student-btn(type="submit") Submit
+                                    button.btn.btn-danger.float-end.disabled.d-none.student-loader-btn(type="botton")
+                                        span.spinner-grow.spinner-grow-sm.mx-2
+                                        span Processing...
+
+        div.tmp

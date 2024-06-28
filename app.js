@@ -34,6 +34,7 @@ app.use("/",indexRouter)
 app.use("/api/signup",signupRouter)
 app.use("/api/login",loginRouter)
 
+app.use("/students",studentRouter)
 
 app.use(async(request,response,next)=>{
   const isVerified= await tokenService.verifyToken(request)
@@ -69,7 +70,6 @@ app.use(async(request,response,next)=>{
   }
   app.use("/api/private/company",companyRouter)
   app.use("/api/private/user",userRouter)
-  app.use("/students",studentRouter)
   app.use("/logout",logoutRouter)
   app.use("/profile",authLogger(),profileRouter)
   
